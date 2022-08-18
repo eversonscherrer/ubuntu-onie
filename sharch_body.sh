@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #
-#  Copyright (C) 2019 Luke Williams <luke.williams@canonical.com>
+#  Based on Copyright (C) 2019 Luke Williams <luke.williams@canonical.com>
 #
 #  SPDX-License-Identifier:     GPL-2.0
 #
