@@ -36,7 +36,7 @@ Creating ./output/ubuntu-focal-amd64-mini-ONIE.bin: .xorriso 1.2.2 : RockRidge f
 xorriso : NOTE : Loading ISO image tree from LBA 0
 xorriso : UPDATE : 280 nodes read in 1 seconds
 xorriso : NOTE : Detected El-Torito boot information which currently is set to be discarded
-Drive current: -indev './input/ubuntu-bionic-amd64-mini.iso'
+Drive current: -indev './input/ubuntu-focal-amd64-mini.iso'
 Media current: stdio file, overwriteable
 Media status : is written , is appendable
 Boot record  : El Torito , ISOLINUX boot image capable of isohybrid
@@ -52,20 +52,23 @@ The resulting ONIE installer file is available in the `output` directory:
 ```
 build-host:~/ubuntu-iso$ ls -l output/
 total 17812
--rw-r--r-- 1 user user 18238940 Oct  9 10:15 ubuntu-bionic-amd64-mini-ONIE.bin
+-rw-r--r-- 1 user user 18238940 Oct  9 10:15 ubuntu-focal-amd64-mini-ONIE.bin
 ```
 
-## Preparing the HTTP image server
+## Preparing the FTP image server
 
-The example assumes you are running an HTTP server on the same machine
-as the virtual machine.  Using local qemu networking the HTTP server
-will be availabe within the VM using IP address 10.0.2.2.
-
-Put the `ubuntu-bionic-amd64-mini-ONIE.bin` file and
-`ubuntu-preseed.txt` file into the document root of the HTTP server:
+Put the `ubuntu-focal-amd64-mini-ONIE.bin` file and
+`ubuntu-preseed.txt` file into the document root of the FTP server:
 
 ```
-build-host:~/ubuntu-iso$ sudo cp output/ubuntu-bionic-amd64-mini-ONIE.bin ubuntu-preseed.cfg /var/www/html/
+/ Navigate to the location where the downloaded files are located.
+build-host:~/ ftp -p your.ftp.ip.address
+/ type user and password to FTP server,
+
+/ Upload ubuntu-preseed.cfg and ubuntu-focal-amd64-mini-ONIE.bin to FTP server.
+build-host:~/ put ubuntu-preseed.cfg
+build-host:~/ put ubuntu-focal-amd64-mini-ONIE.bin
+build-host:~/ exit
 ```
 
 ## Installing the Ubuntu installer from ONIE
@@ -74,32 +77,17 @@ Back in ONIE.  First double check that the network is working
 correctly:
 
 ```
-ONIE:/ # ping 10.0.2.2
-PING 10.0.2.2 (10.0.2.2): 56 data bytes
-64 bytes from 10.0.2.2: seq=0 ttl=255 time=0.237 ms
-64 bytes from 10.0.2.2: seq=1 ttl=255 time=0.179 ms
-^C
---- 10.0.2.2 ping statistics ---
-2 packets transmitted, 2 packets received, 0% packet loss
+ONIE:/ # ping your.ftp.server.address
 ```
-
-Next verify the HTTP server is accessible:
-
-```
-ONIE:/ # wget http://10.0.2.2/ubuntu-preseed.txt
-```
-
-If either of those is not working figure out why before proceeding.
-
 Now proceed with installing the ONIE compatible Ubuntu installer:
 
 ```
-ONIE:/ # onie-nos-install http://10.0.2.2/ubuntu-bionic-amd64-mini-ONIE.bin
+ONIE:/ # onie-nos-install onie-nos-install ftp://user:password@your.ftp.ip.address/ubuntu-focal-amd64-mini-ONIE.bin
 discover: Rescue mode detected. No discover stopped.
-Info: Fetching http://10.0.2.2/ubuntu-bionic-amd64-mini-ONIE.bin ...
-Connecting to 10.0.2.2 (10.0.2.2:80)
+Info: Fetching ftp://*.*.*.*/ubuntu-focal-amd64-mini-ONIE.bin ...
+Connecting to ftp://*.*.*.*/
 installer            100% |*******************************| 17811k  0:00:00 ETA
-ONIE: Executing installer: http://10.0.2.2/ubuntu-bionic-amd64-mini-ONIE.bin
+ONIE: Executing installer: ftp://*.*.*.*/ubuntu-focal-amd64-mini-ONIE.bin
 Verifying image checksum ... OK.
 Preparing image archive ... OK.
 Loading new kernel ...
@@ -116,12 +104,11 @@ continue the install process.
 When complete the Ubuntu system will have the following:
 
 - a sudo-enabled user called `ubuntu` with the login password of `ubuntu`
-- GRUB menu entries for ONIE, from /etc/grub.d/50_onie_grub
-
+- GRUB menu entries for ONIE, from /etc/grub.d/40_custom
 The GRUB menu looks like:
 
 ```
-                        GNU GRUB  version 2.02~beta2-22
+                        GNU GRUB  version 2.04
                                                        
  +----------------------------------------------------------------------------+
  | Ubuntu GNU/Linux                                                           | 
