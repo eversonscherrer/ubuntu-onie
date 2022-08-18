@@ -1,7 +1,7 @@
 # Installing Ubuntu on a ONIE System
 
 This example demonstrates how to create an ONIE compatible installer
-image from a Ubuntu Bionic .ISO file.  This README covers:
+image from a Ubuntu Focal .ISO file.  This README covers:
 
 * Building the  ONIE installer
 * Using a Ubuntu preseed.cfg file to automate installation in an ONIE environment
@@ -13,8 +13,8 @@ installed on your system.  On a Ubuntu based system the following is
 sufficient:
 
 ```
-build-host:~$ sudo apt-get update
-build-host:~$ sudo apt-get install wget xorriso
+build-host:~$ sudo apt update
+build-host:~$ sudo apt install wget xorriso
 ```
 
 To build the Ubuntu ONIE installer change directories to `ubuntu-iso`
@@ -23,15 +23,15 @@ and type the following:
 ```
 build-host:~$ cd /ubuntu-iso
 build-host:~/ubuntu-iso$ ./cook-bits.sh
-Downloading Ubuntu Bionic mini.iso ...
+Downloading Ubuntu Focal mini.iso ...
 ...
-Saving to: `./input/ubuntu-bionic-amd64-mini.iso'
+Saving to: `./input/ubuntu-focal-amd64-mini.iso'
 
 100%[==================================================================================================>] 29,360,128  3.11M/s   in 8.6s    
 
-2015-10-09 10:15:12 (3.25 MB/s) - `./input/ubuntu-bionic-amd64-mini.iso' saved [29360128/29360128]
+2015-10-09 10:15:12 (3.25 MB/s) - `./input/ubuntu-focal-amd64-mini.iso' saved [29360128/29360128]
 
-Creating ./output/ubuntu-bionic-amd64-mini-ONIE.bin: .xorriso 1.2.2 : RockRidge filesystem manipulator, libburnia project.
+Creating ./output/ubuntu-focal-amd64-mini-ONIE.bin: .xorriso 1.2.2 : RockRidge filesystem manipulator, libburnia project.
 
 xorriso : NOTE : Loading ISO image tree from LBA 0
 xorriso : UPDATE : 280 nodes read in 1 seconds
