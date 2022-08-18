@@ -14,7 +14,7 @@ sufficient:
 
 ```
 build-host:~$ sudo apt update
-build-host:~$ sudo apt install wget xorriso
+build-host:~$ sudo apt install xorriso
 ```
 
 To build the Ubuntu ONIE installer change directories to `ubuntu-iso`
