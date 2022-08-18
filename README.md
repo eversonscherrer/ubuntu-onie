@@ -1,4 +1,4 @@
-# Installing Ubuntu on a ONIE System
+# Installing Ubuntu 20.04 on a ONIE System
 
 This example demonstrates how to create an ONIE compatible installer
 image from a Ubuntu Focal .ISO file.  This README covers:
