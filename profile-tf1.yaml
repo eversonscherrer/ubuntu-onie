@@ -2,7 +2,7 @@ global-options:
   asic: true
 features:
   bf-platforms:
-    bsp-path: /home/leris/sde/bf-platforms-ufispace-bsp-9.13.1.tgz
+    bsp-path: /root/bf-platforms-ufispace-bsp-9.13.1.tgz
   p4-examples:
   - p4-16-programs
   switch:
