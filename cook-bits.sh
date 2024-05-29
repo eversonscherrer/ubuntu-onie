@@ -109,7 +109,7 @@ set -e
 
 # use the onie_exec_url to find the preseed file
 base_url="\${onie_exec_url%/*}"
-preseed_url="\${base_url}/./ubuntu-preseed.cfg"
+preseed_url="\${base_url}/ubuntu-preseed.cfg"
 
 echo "Loading new kernel ..."
 kexec --load --initrd=$INITRD --append="$DI_ARGS url=\$preseed_url $KERNEL_ARGS" $KERNEL

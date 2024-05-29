@@ -55,20 +55,17 @@ total 17812
 -rw-r--r-- 1 user user 18238940 Oct  9 10:15 ubuntu-focal-amd64-mini-ONIE.bin
 ```
 
-## Preparing the FTP image server
+## Preparing the HTTP image server
+
+The example assumes you are running an HTTP server on the same machine
+as the virtual machine.  Using local qemu networking the HTTP server
+will be availabe within the VM using IP address 10.0.2.2.
 
 Put the `ubuntu-focal-amd64-mini-ONIE.bin` file and
-`ubuntu-preseed.txt` file into the document root of the FTP server:
+`ubuntu-preseed.cfg` file into the document root of the HTTP server:
 
 ```
-/ Navigate to the location where the downloaded files are located.
-build-host:~/ ftp -p your.ftp.ip.address
-/ type user and password to FTP server,
-
-/ Upload ubuntu-preseed.cfg and ubuntu-focal-amd64-mini-ONIE.bin to FTP server.
-build-host:~/ put ubuntu-preseed.cfg
-build-host:~/ put ubuntu-focal-amd64-mini-ONIE.bin
-build-host:~/ exit
+build-host:~/ubuntu-iso$ sudo cp output/ubuntu-focal-amd64-mini-ONIE.bin ubuntu-preseed.cfg /var/www/html/
 ```
 
 ## Installing the Ubuntu installer from ONIE
@@ -77,17 +74,32 @@ Back in ONIE.  First double check that the network is working
 correctly:
 
 ```
-ONIE:/ # ping your.ftp.server.address
+ONIE:/ # ping 10.0.2.2
+PING 10.0.2.2 (10.0.2.2): 56 data bytes
+64 bytes from 10.0.2.2: seq=0 ttl=255 time=0.237 ms
+64 bytes from 10.0.2.2: seq=1 ttl=255 time=0.179 ms
+^C
+--- 10.0.2.2 ping statistics ---
+2 packets transmitted, 2 packets received, 0% packet loss
 ```
+
+Next verify the HTTP server is accessible:
+
+```
+ONIE:/ # wget http://10.0.2.2/ubuntu-preseed.txt
+```
+
+If either of those is not working figure out why before proceeding.
+
 Now proceed with installing the ONIE compatible Ubuntu installer:
 
 ```
-ONIE:/ # onie-nos-install onie-nos-install ftp://user:password@your.ftp.ip.address/ubuntu-focal-amd64-mini-ONIE.bin
+ONIE:/ # onie-nos-install http://10.0.2.2/ubuntu-focal-amd64-mini-ONIE.bin
 discover: Rescue mode detected. No discover stopped.
-Info: Fetching ftp://*.*.*.*/ubuntu-focal-amd64-mini-ONIE.bin ...
-Connecting to ftp://*.*.*.*/
+Info: Fetching http://10.0.2.2/ubuntu-focal-amd64-mini-ONIE.bin ...
+Connecting to 10.0.2.2 (10.0.2.2:80)
 installer            100% |*******************************| 17811k  0:00:00 ETA
-ONIE: Executing installer: ftp://*.*.*.*/ubuntu-focal-amd64-mini-ONIE.bin
+ONIE: Executing installer: http://10.0.2.2/ubuntu-focal-amd64-mini-ONIE.bin
 Verifying image checksum ... OK.
 Preparing image archive ... OK.
 Loading new kernel ...
