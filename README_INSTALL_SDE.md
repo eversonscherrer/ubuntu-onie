@@ -29,8 +29,8 @@ Now the bf-sde is installed you need to install your correct bsp that matches yo
 After you download corresponding std platform for ubuntu let's install
 
 ```
-ubuntu:~$ tar -xzvf s9180-32x-std-platform-bsp-ubuntu-<>.<>.tgz
-ubuntu:~$ cd s9180-32x-std-platform-bsp-ubuntu-<>.<>
+ubuntu:~$ tar -xzvf std-platform-bsp-ubuntu-<>.<>.tgz
+ubuntu:~$ cd std-platform-bsp-ubuntu-<>.<>
 ubuntu:~$ cd bsp
 ubuntu:~$ make
 ubuntu:~$ make install
